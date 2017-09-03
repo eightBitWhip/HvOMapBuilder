@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<style type="text/css">
+div.typeselector {background-color:yellow; width:30px; height:30px;}
+div.tile {background-color:brown; float:left; width:30px; height:30px;}
+div.mapRow {background-color:orange;width:500px;height:30px;}
+img.tile {width:30px;height:30px;}
+img.mapTile {width:30px;height:30px;}
+h2 {position:absolute;left:400px;top:560px;background-color:purple;color:orange;} 
+</style>
+<script src="jquery-2.0.3.js">
+</script>
+<title>
+Heroes Vs. Outsiders Map Creator
+</title>
+</head>
+<body>
+<h1 id="greeting">HELLO SARAH. FEEL LIKE BUILDING MAPS TODAY?</h1>
+<div id="terrainPicker" style="width:50px;height:280px;background-color:red;float:left;">
+	<div class="typeselector">
+		<img class="tile" src="heroBaseTile.png" />
+	</div>
+	<div class="typeselector">
+		<img class="tile" src="outBaseTile.png" />
+	</div>
+	<div class="typeselector">
+		<img class="tile" src="dirtTile.png" />
+	</div>
+	<div class="typeselector">
+		<img class="tile" src="waterTile.png" />
+	</div>
+	<div class="typeselector">
+		<img class="tile" src="forestTile.png" />
+	</div>
+	<div class="typeselector">
+		<img class="tile" src="mountainTile.png" />
+	</div>
+	<div class="typeselector">
+		<img class="tile" src="radarTile.png" />
+	</div>
+	<div class="typeselector">
+		<img class="tile" src="teslaTile.png" />
+	</div>
+</div>
+<div id="mapMain" style="width:600px;height:400px;background-color:green;float:left;">
+</div>
+
+<h2 id="getDataBit">[GET DATA]</h2>
+
+<script>
+	$(document).ready(function(){
+		
+		currentTile = "dirtTile.png";
+		var mmHtml = "";
+		
+		for (var i = 0; i < 10; i++) {
+    		mmHtml = mmHtml + "<div class='mapRow'>";
+    		for ( var j = 0; j < 14; j++ ) {
+    			mmHtml = mmHtml + "<div class='tile' id='" + i + "-" + j + "'><img class='mapTile' src='dirtTile.png' /></div>";
+    		}
+    		mmHtml = mmHtml + "</div>";
+		}
+		$("#mapMain").html(mmHtml);
+		
+		var greetings=new Array("FEEL LIKE BUILDING MAPS TODAY?","THEM MAPS AINT GONNA BUILD THEMSELVES!","PICK A TILE, ANY TILE.","THERE'S ALWAYS TIME FOR MAPS.");
+		$("#greeting").html("HELLO STRANGER. " + greetings[Math.floor((Math.random()*3))]);
+	
+		$("img.tile").click(function(){
+			$("#terrainPicker").children().css("background-color","yellow");
+    		$(this).parent().css("background-color","red");
+    		currentTile = $(this).attr("src");
+  		});
+  		
+  		$("div.tile").click(function(){
+    		$(this).children("img.mapTile").attr("src",currentTile);
+  		});
+  		
+  		$("#getDataBit").click(function(){
+  			var output = "(";
+    		for (var i = 0; i < 10; i++) {
+    			output = output + "(";
+    			for ( var j = 0; j < 14; j++ ) {
+    				var tileNum = "0";
+    				var id = "#" + i + "-" + j;
+    				if ( $(id).children("img.mapTile").attr("src") == "dirtTile.png" ) { tileNum = "1"; }
+    				else if ( $(id).children("img.mapTile").attr("src") == "waterTile.png" ) { tileNum = "3"; }
+    				else if ( $(id).children("img.mapTile").attr("src") == "forestTile.png" ) { tileNum = "4"; }
+    				else if ( $(id).children("img.mapTile").attr("src") == "mountainTile.png" ) { tileNum = "2"; }
+    				else if ( $(id).children("img.mapTile").attr("src") == "radarTile.png" ) { tileNum = "5"; }
+    				else if ( $(id).children("img.mapTile").attr("src") == "teslaTile.png" ) { tileNum = "6"; }
+    				else if ( $(id).children("img.mapTile").attr("src") == "heroBaseTile.png" ) { tileNum = "7"; }
+    				else if ( $(id).children("img.mapTile").attr("src") == "outBaseTile.png" ) { tileNum = "8"; }
+    				else { tileNum = "-1"; }
+    				output = output + tileNum + ",";
+    			}
+    			output = output.substr(0,output.length-1) + "),";
+			}
+			output = output.substr(0,output.length-1) + ")";
+			alert(output);
+  		});
+
+	});
+</script>
+
+</body>
+</html>
